@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Avengers: Doomsday Countdown</title>
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    font-family:'Orbitron',sans-serif;
+
+    background:
+    radial-gradient(circle at top,#184d2d 0%,#08110c 30%,#000000 100%);
+}
+
+/* Animated Doom Energy */
+
+body::before{
+    content:"";
+    position:absolute;
+    width:200%;
+    height:200%;
+    background:
+    repeating-radial-gradient(
+        circle,
+        rgba(0,255,100,0.08) 0px,
+        rgba(0,255,100,0.08) 2px,
+        transparent 3px,
+        transparent 25px
+    );
+    animation:rotateEnergy 40s linear infinite;
+}
+
+@keyframes rotateEnergy{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+}
+
+/* Stars */
+
+.stars{
+    position:absolute;
+    width:100%;
+    height:100%;
+    background-image:
+    radial-gradient(white 1px,transparent 1px),
+    radial-gradient(#00ff88 1px,transparent 1px);
+    background-size:50px 50px,100px 100px;
+    opacity:.25;
+}
+
+/* Main Container */
+
+.container{
+    position:relative;
+    z-index:2;
+    text-align:center;
+    padding:40px;
+    width:90%;
+    max-width:1200px;
+}
+
+/* Doctor Doom Logo */
+
+.logo{
+    width:130px;
+    height:130px;
+    margin:auto;
+    border-radius:50%;
+    border:4px solid #00ff88;
+
+    background:
+    linear-gradient(
+    135deg,
+    #d7d7d7,
+    #7a7a7a,
+    #f0f0f0);
+
+    color:#0f3d1e;
+    font-size:75px;
+    font-weight:900;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    box-shadow:
+    0 0 20px #00ff88,
+    0 0 50px #00ff88,
+    inset 0 0 25px rgba(255,255,255,.5);
+
+    animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+    0%,100%{
+        transform:scale(1);
+    }
+    50%{
+        transform:scale(1.08);
+    }
+}
+
+h1{
+    margin-top:25px;
+    color:#00ff88;
+    font-size:4rem;
+    font-weight:900;
+    letter-spacing:4px;
+
+    text-shadow:
+    0 0 10px #00ff88,
+    0 0 25px #00ff88,
+    0 0 50px #00ff88;
+}
+
+.subtitle{
+    margin-top:15px;
+    color:#d8d8d8;
+    font-size:1.3rem;
+    letter-spacing:2px;
+}
+
+/* Countdown */
+
+.countdown{
+    margin-top:50px;
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:25px;
+}
+
+.box{
+    width:180px;
+    padding:25px;
+
+    background:
+    linear-gradient(
+    145deg,
+    rgba(180,180,180,.25),
+    rgba(0,0,0,.8));
+
+    border:2px solid #00ff88;
+    border-radius:20px;
+
+    backdrop-filter:blur(10px);
+
+    box-shadow:
+    0 0 15px rgba(0,255,136,.5),
+    inset 0 0 20px rgba(255,255,255,.1);
+
+    transition:.3s;
+}
+
+.box:hover{
+    transform:translateY(-10px) scale(1.05);
+
+    box-shadow:
+    0 0 25px #00ff88,
+    0 0 50px rgba(0,255,136,.7);
+}
+
+.box span{
+    display:block;
+    font-size:4rem;
+    font-weight:900;
+    color:#ffffff;
+
+    text-shadow:
+    0 0 10px #00ff88,
+    0 0 20px #00ff88;
+}
+
+.box p{
+    margin-top:10px;
+    color:#00ff88;
+    font-size:1rem;
+    letter-spacing:2px;
+}
+
+/* Mobile */
+
+@media(max-width:768px){
+
+h1{
+    font-size:2.2rem;
+}
+
+.logo{
+    width:100px;
+    height:100px;
+    font-size:55px;
+}
+
+.box{
+    width:140px;
+}
+
+.box span{
+    font-size:3rem;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="stars"></div>
+
+<div class="container">
+
+<div class="logo">
+D
+</div>
+
+<h1>AVENGERS: DOOMSDAY</h1>
+
+<p class="subtitle">
+The Rise of Doctor Doom Begins...
+</p>
+
+<div class="countdown">
+
+<div class="box">
+<span id="days">0</span>
+<p>DAYS</p>
+</div>
+
+<div class="box">
+<span id="hours">0</span>
+<p>HOURS</p>
+</div>
+
+<div class="box">
+<span id="minutes">0</span>
+<p>MINUTES</p>
+</div>
+
+<div class="box">
+<span id="seconds">0</span>
+<p>SECONDS</p>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const releaseDate =
+new Date("May 1, 2027 00:00:00").getTime();
+
+function updateCountdown(){
+
+const now = new Date().getTime();
+
+const distance = releaseDate - now;
+
+const days =
+Math.floor(distance/(1000*60*60*24));
+
+const hours =
+Math.floor((distance%(1000*60*60*24))/(1000*60*60));
+
+const minutes =
+Math.floor((distance%(1000*60*60))/(1000*60));
+
+const seconds =
+Math.floor((distance%(1000*60))/1000);
+
+document.getElementById("days").innerHTML = days;
+document.getElementById("hours").innerHTML = hours;
+document.getElementById("minutes").innerHTML = minutes;
+document.getElementById("seconds").innerHTML = seconds;
+
+}
+
+updateCountdown();
+setInterval(updateCountdown,1000);
+
+</script>
+
+</body>
+</html>
